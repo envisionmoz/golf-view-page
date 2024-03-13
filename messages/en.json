@@ -1,0 +1,28 @@
+{
+  "Navbar": {
+    "opcao1": "Home",
+    "opcao2": "Accommodations",
+    "opcao3": "Amenities",
+    "opcao4": "Location",
+    "button1": "Book",
+    "button2": "English"
+  },
+  "Hero": {
+    "Title": "RECEIVE LUXURY AND COMFORT",
+    "Subtitle": "Welcome to the place where luxury meets accessibility"
+  },
+  "Apartments": {"Title": "Our Accommmodations"},
+  "Amenities": {
+    "Title": "Enjoy Our Amenities",
+    "Description": "As a guest of Golf View, we welcome you to enjoy our amenities:",
+    "Internet": "Free Internet Access",
+    "Parking": "Available Parking (For 6 Cars)",
+    "Pool": "Swimming Pool (28m2)",
+    "Cleaning": "Cleaning Services",
+    "Breakfast": "Breakfast (additional cost)"
+  },
+  "Footer": {
+    "Terms" : "Terms and conditions",
+    "Info" : "More information"
+  }
+}

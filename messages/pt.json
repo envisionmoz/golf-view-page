@@ -1,0 +1,30 @@
+{
+  "Navbar": {
+    "opcao1": "Inicio",
+    "opcao2": "Acomodacoes",
+    "opcao3": "Comodidades",
+    "opcao4": "Localizacao",
+    "button1": "Reservar",
+    "button2": "Portugues"
+  },
+  "Hero": {
+    "Title": "RECEBA LUXO E CONFORTO",
+    "Subtitle": "Seja Bem Vindo Ao Sitio Que Luxo Se Encontra A Acessibilidade "
+  },
+  "Apartments": {
+    "Title": "Nossas Acomodacoes"
+  },
+  "Amenities": {
+    "Title": "Aproveite Nossas Comodidades",
+    "Description": "Como hospede do Golf View damos as boas-vindas a voce para desfrutar das nossas comodidades:",
+    "Internet": "Acesso a Internet Gratis",
+    "Parking": "Estacionamento Disponivel (Para 6 Carros)",
+    "Pool": "Piscina(28m2)",
+    "Cleaning": "Servicos de Limpeza",
+    "Breakfast": "Pequeno Almoco(custo adicional)"
+  },
+  "Footer": {
+    "Terms" : "Termos e condicoes",
+    "Info" : "Informacoes da empresa"
+  }
+}

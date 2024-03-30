@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link, usePathname } from "../../navigation";
 import { useEffect, useState } from "react";
-
+import { useRouter } from 'next/navigation';
 import "../css/popup.css";
 
 interface LanguageTogglerProps {
@@ -13,6 +13,8 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({
   isOverlayVisible,
 }) => {
   const pathname = usePathname();
+  const router = useRouter();
+  const [selectedLanguage, setSelectedLanguage] = useState("");
   const BASE_URL =
     "https://v6.exchangerate-api.com/v6/4d8b22b0e7ac78a0bde870fb/latest/MZN";
   const [currencyOptions, SetCurrencyOptions] = useState([]);
@@ -53,39 +55,60 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({
     }
   };
 
+  const handleLanguageSelect = (locale) => {
+    setSelectedLanguage(locale);
+  };
+
+  const handleAlterarClick = () => {
+    // Here, you can perform any action needed when "Alterar" button is clicked
+    console.log("Selected currency:", selectedCurrency);
+    console.log("Selected language:", selectedLanguage);
+    router.push(router.pathname, undefined, { locale: selectedLanguage });
+    window.location.reload();
+  };
   return (
     <>
       {isOverlayVisible && (
         <div className="pop-up-container">
-          
           <div>
             <h1>Idioma e Moeda</h1>
           </div>
           <div className="languages">
-            <select className="select-container">
-              <option value="">Select Language</option>
-              <option value="pt">
-                <Link href={pathname} locale="pt">
-                  Português
-                </Link>
-              </option>
-              <option value="en">
-                <Link href={pathname} locale="en">
-                  English
-                </Link>
-              </option>
-            </select>
+            <button
+              className={selectedLanguage === "pt" ? "selected" : ""}
+              onClick={() => handleLanguageSelect("pt")}
+            >
+              Português
+            </button>
+
+            <button
+              className={selectedLanguage === "en" ? "selected" : ""}
+              onClick={() => handleLanguageSelect("en")}
+            >
+              English
+            </button>
+            {selectedLanguage && (
+            <div>
+              <Link href={pathname} locale={selectedLanguage}>
+                {selectedLanguage === 'pt' ? 'Português' : 'English'}
+              </Link>
+            </div>
+          )}
           </div>
           <div className="currencies">
-        <select  value={selectedCurrency} onChange={handleCurrencyChange} className="select-container">
-          {currencyOptions.map((currency) => (
-            <option key={currency} value={currency}>
-
-              {currency}
-            </option>
-          ))}
-        </select>
-      </div>
+            <select
+              value={selectedCurrency}
+              onChange={handleCurrencyChange}
+              className="select-container"
+            >
+              {currencyOptions.map((currency) => (
+                <option key={currency} value={currency}>
+                  {currency}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button onClick={handleAlterarClick}>Alterar</button>
         </div>
       )}
     </>

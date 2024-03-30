@@ -14,7 +14,7 @@ const LangButton = () => {
   return (
     <div className='language-button'>
       <button onClick={toggleOverlay}>PORTUGUES | MZN</button>
-      <LanguageToggler isOverlayVisible={isOverlayVisible} />
+      <LanguageToggler isOverlayVisible={isOverlayVisible}  />
     </div>
   );
 };

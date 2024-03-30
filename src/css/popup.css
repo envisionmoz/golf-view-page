@@ -74,16 +74,26 @@ background-color: #AEAEA4;
   font-size: 14px;
   width: 10rem;
 }
+.reserve-container form select{
+  height: 1rem !important;
+  border: none;
+  background-color: #AEAEA4;
+  color: rgb(255, 255, 255);
+  font-weight:bold ;
+  font-size: 14px;
+  width: fit-content;
+}
 
 .reserve-container form input::placeholder{
   color: white;
 }
-.reserve-container form input:focus{
+.reserve-container form input,select:focus{
   background-color: none !important;
 outline: none;}
 .date-picker-container{
   width: 4.5rem !important;
-  color: white !important;;
+  color: white !important;
+  
 }
 
 .reserve-container form button{
@@ -93,8 +103,18 @@ outline: none;}
   border-radius: 8px;
 }
 
-.date-picker-container .react-datepicker__navigation--previous {
-  background:none !important;
-  width: 20px; /* Set the width of the custom arrow */
-  height: 20px; /* Set the height of the custom arrow */
+.date-picker-container.icon{
+  color: white;
+}
+
+.react-datepicker__navigation{
+  height: 0.5rem !important;
+width: 0.5rem !important;  
+color: black !important;
+padding: 0.75rem !important;
+margin: 0.2rem !important;
+}
+
+.react-datepicker__calendar-icon {
+  color: white !important;
 }

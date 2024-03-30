@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../css/popup.css";
+import { FaCalendarAlt } from "react-icons/fa";
 
 interface LanguageTogglerProps {
   isOverlayVisible: boolean;
@@ -50,6 +51,7 @@ const ReserveToggler: React.FC<LanguageTogglerProps> = ({
               className="date-picker-container"
               showIcon
               selected={arrivalDate}
+              closeOnScroll={(e) => e.target === document}
               onChange={handleArrivalDateChange}
               minDate={minArrivalDate}
               maxDate={maxDepartureDate}
@@ -58,12 +60,14 @@ const ReserveToggler: React.FC<LanguageTogglerProps> = ({
               endDate={departureDate}
               dateFormat="MMM d, yy"
               placeholderText={new Date().toLocaleDateString()}
+              icon={<FaCalendarAlt  />}
             />
 
             <DatePicker
               className="date-picker-container"
               showIcon
               selected={departureDate}
+              closeOnScroll={(e) => e.target === document}
               onChange={handleDepartureDateChange}
               minDate={tomorrow}
               maxDate={maxDepartureDate}
@@ -72,22 +76,30 @@ const ReserveToggler: React.FC<LanguageTogglerProps> = ({
               endDate={departureDate}
               dateFormat="MMM d, yy"
               placeholderText={tomorrow.toLocaleDateString()}
+              icon={<FaCalendarAlt />}
             />
-              <input
-                type="number"
-                value={numberOfGuests}
-                placeholder="Number of Guests"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  // Ensure the value is a positive number or an empty string
-                  if (
-                    value === "" ||
-                    (parseInt(value) > 0 && !isNaN(parseInt(value)))
-                  ) {
-                    setNumberOfGuests(value);
-                  }
-                }}
-              />
+            <select
+              value={numberOfGuests}
+              onChange={(e) => {
+                const value = e.target.value;
+                // Ensure the value is a positive number or an empty string
+                if (
+                  value === "" ||
+                  (parseInt(value) > 0 && !isNaN(parseInt(value)))
+                ) {
+                  setNumberOfGuests(value);
+                }
+              }}
+            >
+              <option value="" style={{ color: "white !important" }}>
+                Number of Guests
+              </option>
+              {/* You can generate options dynamically if needed */}
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              {/* Add more options as needed */}
+            </select>
 
             <button type="button" onClick={handleReserve}>
               Reservar

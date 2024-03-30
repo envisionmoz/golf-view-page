@@ -12,7 +12,7 @@ body {
   font-size: 16px;
 }
 
-a {
+.a {
   text-decoration: none;
   color: #000000;
 }
@@ -122,18 +122,20 @@ nav li {
   width: 62.5rem;
 }
 
-.apartments-section {
+.slider-container {
   padding: 4rem 8rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 1rem !important;
   flex-direction: row;
 }
+
 .apartments-section-container {
-  height: 100vh;
-  max-width: 100%;
+  height: fit-content;
+  max-width: 100% !important;
+  overflow: hidden;
 }
 .apartments-section-container h1 {
   text-align: center;
@@ -142,37 +144,60 @@ nav li {
 }
 
 .apartment-display {
-  width: 40%;
+  width: 95%;
   height: 70vh;
   overflow: hidden;
   position: relative;
 }
-.ap-image-container{
+.ap-image-container {
   height: 35vh;
-  z-index: 1 !important;
 
+  z-index: 1 !important;
 }
 .apartment-image {
   height: 100%;
+
   width: 100% !important;
   scale: 1/2;
 }
 .apartment-details {
-  padding: 2rem;
-  height: 100%;
-  background-color: #AEAEA4;
-  min-width: 100% !important;
+  height: 18rem;
 
+  background-color: hsla(0, 5%, 78%, 0.151);
+  box-sizing: border-box;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.apartment-details h2 {
+  font-size: 15px;
 }
 
+.apartment-details p {
+  text-align: justify;
+  font-size: 14px;
+}
+.apartment-details button {
+  background: none;
+  border: 1px solid #aeaea4;
+  color: #61615f86;
+  border-radius: 2px;
+  font-weight: 600;
+
+  padding: 0.4rem;
+}
 
 .apartment-size {
   background-color: hsla(0, 0%, 0%, 0.644);
-  height: 5rem;
+  height: 4rem;
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   position: absolute;
-  top: 9.1rem;
+
+  top: 10.1rem;
   flex-direction: row;
   z-index: 2;
 }
@@ -182,27 +207,25 @@ nav li {
   color: white;
 }
 
-
 .amenities {
   display: flex;
-height: 100vh;
-gap: 2rem;
-width: 100%;
-box-sizing: border-box;
-justify-content: center;
-align-items: center;
-padding: 0 8rem;
-background-color: hsla(0, 0%, 69%, 0.3);
+  height: 100vh;
+  gap: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  padding: 0 8rem;
+  background-color: hsla(0, 0%, 69%, 0.082);
 }
-.amenities-image-container{
+.amenities-image-container {
   flex: 1;
   width: 50%;
 }
-.amenities-image{
-
+.amenities-image {
 }
 
-.amenities .description{
+.amenities .description {
   flex: 1;
   width: 50%;
   display: flex;
@@ -210,20 +233,22 @@ background-color: hsla(0, 0%, 69%, 0.3);
   gap: 2.5rem;
 }
 
-.amenities .description h1{
+.amenities .description h1 {
   font-family: poly;
   font-weight: 500;
   font-size: 2.45rem;
 }
 
-.amenities .description ul{
+.amenities .description ul {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
-
-
-.footer-container{
+.amenities .description ul li {
+  display: flex;
+  align-items: center;
+}
+.footer-container {
   height: 5rem;
   display: flex;
   flex-direction: row !important;
@@ -231,8 +256,125 @@ background-color: hsla(0, 0%, 69%, 0.3);
   align-items: center;
 }
 
-.footer-container ul{
+.footer-container ul {
   display: flex;
   gap: 2rem;
+}
 
+.apartment-description-container {
+  padding: 4rem 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  box-sizing: border-box;
+  height: 100vh;
+}
+
+.apartment-description-container .description {
+  display: grid;
+  gap: 1rem;
+}
+
+.apartment-description-container .description p {
+  line-height: 1.4em;
+}
+.apartment-amenities {
+  display: grid;
+  gap: 1rem;
+}
+
+.apartment-amenities ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: row;
+  line-height: 3em;
+}
+
+.price {
+  line-height: 2rem;
+}
+
+.calendar-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+
+.calendar-section-container {
+  display: flex;
+  box-sizing: border-box;
+  padding: 4rem 6rem;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.reserve-info-container {
+  box-sizing: border-box;
+  display: grid;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  padding-bottom:3rem ;
+  width: fit-content;
+  height: fit-content;
+  background-color: #aeaea431;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.reserve-info {
+  display: grid;
+  gap: 1rem;
+}
+
+.info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.reserva-factura {
+  display: grid;
+  gap: 1rem;
+}
+
+/* styles.css */
+
+
+.calendar {
+  width: 24rem !important;
+  border: none;
+  border-radius: 5px;
+  padding: 2rem 1rem;
+  height: fit-content;
+}
+.react-datepicker {
+  border-radius: 8px;
+  border: none;
+  padding: 2rem 2rem;
+  
+}
+
+.react-datepicker__month-container {
+}
+
+.react-datepicker__day {
+  color: #333;
+}
+
+.react-datepicker__day--selected {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.react-datepicker__day--disabled {
+  color: #ccc;
+  pointer-events: none;
 }

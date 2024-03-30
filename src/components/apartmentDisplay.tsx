@@ -1,13 +1,22 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import "../css/app.css";
+import { useRouter } from 'next/navigation';
+import {NextIntlClientProvider} from 'next-intl';
 const ApartmentDisplay = ({ apartmentData }) => {
-  const { imageUrl, guestsNumber, areaSize, apartmentName, description } =
+  const { id, imageUrl, guestsNumber, areaSize, apartmentName, description } =
     apartmentData;
+    const router = useRouter();
 
-  // Truncate description to show a limit of 15 words
+    const locale = router.locale;
+
   const truncatedDescription = description.split(" ").slice(0, 18).join(" ");
 
+  const handleReservarClick = () => {
+    // Navigate to the dynamic page for the selected apartment
+    router.push(`/${locale}/apartments/${apartmentData.id}`);    
+  };
   return (
     <div className="apartment-display">
       <div className="ap-image-container">
@@ -27,6 +36,7 @@ const ApartmentDisplay = ({ apartmentData }) => {
         <h2>{apartmentName}</h2>
 
         <p>{truncatedDescription}...</p>
+        <button onClick={handleReservarClick}>Reservar Agora</button>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const LangButton = () => {
 
   return (
     <div className="reserve-button">
-      <button onClick={toggleOverlay}>Reservar</button>
+      <button onClick={toggleOverlay}>Pesquisar</button>
       <ReserveToggler isOverlayVisible={isOverlayVisible} />
     </div>
   );

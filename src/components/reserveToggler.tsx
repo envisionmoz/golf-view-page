@@ -15,7 +15,6 @@ const ReserveToggler: React.FC<LanguageTogglerProps> = ({
 }) => {
   const [arrivalDate, setArrivalDate] = useState("");
   const [departureDate, setDepartureDate] = useState("");
-  const [numberOfGuests, setNumberOfGuests] = useState("");
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -35,12 +34,11 @@ const ReserveToggler: React.FC<LanguageTogglerProps> = ({
     setDepartureDate(date);
   };
 
-  const handleReserve = () => {
+  const searchAvailableApartments = () => {
     // Here you can implement logic to process and show data
     // that fits the description and availability
     console.log("Arrival Date:", arrivalDate);
     console.log("Departure Date:", departureDate);
-    console.log("Number of Guests:", numberOfGuests);
   };
   return (
     <>
@@ -69,7 +67,7 @@ const ReserveToggler: React.FC<LanguageTogglerProps> = ({
               selected={departureDate}
               closeOnScroll={(e) => e.target === document}
               onChange={handleDepartureDateChange}
-              minDate={tomorrow}
+              minDate={arrivalDate || tomorrow}
               maxDate={maxDepartureDate}
               selectsEnd
               startDate={arrivalDate}
@@ -78,31 +76,9 @@ const ReserveToggler: React.FC<LanguageTogglerProps> = ({
               placeholderText={tomorrow.toLocaleDateString()}
               icon={<FaCalendarAlt />}
             />
-            <select
-              value={numberOfGuests}
-              onChange={(e) => {
-                const value = e.target.value;
-                // Ensure the value is a positive number or an empty string
-                if (
-                  value === "" ||
-                  (parseInt(value) > 0 && !isNaN(parseInt(value)))
-                ) {
-                  setNumberOfGuests(value);
-                }
-              }}
-            >
-              <option value="" style={{ color: "white !important" }}>
-                Number of Guests
-              </option>
-              {/* You can generate options dynamically if needed */}
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              {/* Add more options as needed */}
-            </select>
 
-            <button type="button" onClick={handleReserve}>
-              Reservar
+            <button type="button" onClick={searchAvailableApartments}>
+              Pesquisar
             </button>
           </form>
         </div>

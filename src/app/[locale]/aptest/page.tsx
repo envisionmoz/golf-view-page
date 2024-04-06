@@ -13,64 +13,15 @@ import {
 } from "react-icons/fa";
 import Footer from "../../../components/footer";
 import DatePickerApartment from "../../../components/datePickerApartment";
-
+import ImageHero from "../../../components/heroImage";
 function page() {
   const amt = useTranslations("Amenities");
+
 
   return (
     <>
       <Navbar></Navbar>
-      <div className="apartments-hero">
-        <div className="image-main-container">
-            <div className="image-box">
-              <Image
-                src={"/images/apartments/1/bedroom.jpg"}
-                alt="bedroom"
-                className="image"
-                width={0}
-                height={0}
-              ></Image>
-          </div>
-          <div className="image-sub-container">
-            <div className="image-box">
-              <Image
-                src={"/images/apartments/1/bathtub.jpg"}
-                alt="bathtub"
-                className="image"
-                width={0}
-                height={0}
-              />
-            </div>
-            <div className="image-box">
-              <Image
-                src={"/images/apartments/1/kitchen.jpg"}
-                alt="kitchen"
-                className="image"
-                width={0}
-                height={0}
-              />
-            </div>
-            <div className="image-box">
-              <Image
-                src={"/images/apartments/1/living-room.jpg"}
-                alt="living room"
-                className="image"
-                width={0}
-                height={0}
-              />
-            </div>
-            <div className="image-box">
-              <Image
-                src={"/images/apartments/1/sink.jpg"}
-                alt="sink"
-                className="image"
-                width={0}
-                height={0}
-              />
-            </div>{" "}
-          </div>
-        </div>
-      </div>
+      <ImageHero/>
       <div className="apartment-description-container">
         <div className="description">
           <h2>Descricao</h2>
@@ -87,7 +38,7 @@ function page() {
           </p>
         </div>
         <div className="apartment-amenities">
-            <h2>Comodidades</h2>
+          <h2>Comodidades</h2>
           <ul>
             <li>
               <FaWifi style={{ width: "60px", height: "25px" }} />

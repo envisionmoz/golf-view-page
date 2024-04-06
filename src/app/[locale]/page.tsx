@@ -15,6 +15,7 @@ export default function Home() {
   return (
     <main>
       <Navbar/>
+      
       <div className="hero-section" id="hero">
 <h1>{ht("Title")}</h1>
 <p>{ht("Subtitle")}</p>

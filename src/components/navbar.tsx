@@ -21,16 +21,16 @@ function navbar() {
       </Link>
       <ul>
         <li>
-          <Link href={"#hero"} className="a">{t("opcao1")}</Link>
+          <Link href={"/#hero"} className="a">{t("opcao1")}</Link>
         </li>
         <li>
-        <Link href={"#apartments"} className="a">{t("opcao2")}</Link>
+        <Link href={"/#apartments"} className="a">{t("opcao2")}</Link>
         </li>
         <li>
-        <Link href={"#amenities"} className="a">{t("opcao3")}</Link>
+        <Link href={"/#amenities"} className="a">{t("opcao3")}</Link>
         </li>
         <li>
-        <Link href={"#location"} className="a">{t("opcao4")}</Link>
+        <Link href={"/#location"} className="a">{t("opcao4")}</Link>
         </li>
       </ul>
       <div className="nav-buttons">

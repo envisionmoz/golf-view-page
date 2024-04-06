@@ -5,6 +5,7 @@ import { useEffect, useState, useTransition, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import "../css/popup.css";
+import { FaGlobe } from "react-icons/fa";
 
 interface LanguageTogglerProps {
   isOverlayVisible: boolean;
@@ -48,10 +49,18 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({
       .catch((error) => console.error("Error fetching currency data:", error));
   }, []);
 
-  const onCurrencyChange = (e) => {
+  // useEffect(() => {
+  //   console.log("the currency is", selectedCurrency);
+
+  //   // Update booking price based on the selected currency
+  //   if (conversionRates[selectedCurrency]) {
+  //     setBookingPrice(3500 * conversionRates[selectedCurrency]);
+  //   }
+  // }, [selectedCurrency, conversionRates]);
+
+  const onCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const currency = e.target.value;
     setSelectedCurrency(currency);
-
     // Update booking price based on the selected currency
     if (conversionRates[currency]) {
       setBookingPrice(3500 * conversionRates[currency]);
@@ -63,9 +72,13 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({
   };
 
   const handleAlterarClick = () => {
-    startTransition(() => {
-      router.replace(`/${selectedLocale}`);
-    });
+    if (localActive != selectedLocale) {
+      startTransition(() => {
+        router.replace(`/${selectedLocale}`);
+      });
+    }else{
+      window.location.reload();
+    }
     setIsButtonClicked(true);
   };
 
@@ -78,20 +91,23 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({
           </div>
           <div className="languages">
             <select
-              defaultValue={localActive}
               className="select-container"
               disabled={isButtonClicked}
               onChange={onSelectChange}
             >
+              <option> Selecione O Idioma</option>
               <option value="pt">Português</option>
               <option value="en">English</option>
             </select>
           </div>
           <div className="currencies">
             <select
-              value={selectedCurrency}
-              className="select-container currency-select"
+              className="select-container"
+              disabled={isButtonClicked}
+              onChange={onCurrencyChange}
             >
+              <option>Selecione a sua moeda desejada</option>
+
               {currencyOptions.map((currency) => (
                 <option key={currency} value={currency}>
                   {currency}

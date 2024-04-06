@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa";
 import Footer from "../../../components/footer";
 import DatePickerApartment from "../../../components/datePickerApartment";
-import ImageHero from "../../../components/heroImage";
+import ImageHero from "../../../components/Ameneties";
 function page() {
   const amt = useTranslations("Amenities");
 

@@ -34,9 +34,18 @@ a:hover {
 
 .select-container {
   width: 40rem;
-  height: 3.5rem;
+  height: fit-content;
+border: 1px solid #aeaea494;
+border-radius: 8px;
+  padding: 1.2rem 2rem;
+  -webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+background-image: url('data:image/svg+xml;utf8,<svg fill="%23343a40" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>');
+background-repeat: no-repeat;
+background-size: 28px;
+background-position: right 1rem center; /* Adjust as needed */
 }
-
 .pop-up-container h1 {
   margin-left: -20rem !important;
 }
@@ -54,10 +63,10 @@ a:hover {
   transform: translate(-50%, -50%);
   background-color: #fff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-background-color: #AEAEA4;
+  background-color: #aeaea4;
 }
 
-.reserve-container form{
+.reserve-container form {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,54 +74,55 @@ background-color: #AEAEA4;
   gap: 1rem;
 }
 
-.reserve-container form input{
+.reserve-container form input {
   height: 1rem !important;
   border: none;
   background: none;
   color: white;
-  font-weight:bold ;
+  font-weight: bold;
   font-size: 14px;
   width: 10rem;
 }
-.reserve-container form select{
+.reserve-container form select {
   height: 1rem !important;
   border: none;
-  background-color: #AEAEA4;
+  background-color: #aeaea4;
   color: rgb(255, 255, 255);
-  font-weight:bold ;
+  font-weight: bold;
   font-size: 14px;
   width: fit-content;
 }
 
-.reserve-container form input::placeholder{
+.reserve-container form input::placeholder {
   color: white;
 }
-.reserve-container form input,select:focus{
+.reserve-container form input,
+select:focus {
   background-color: none !important;
-outline: none;}
-.date-picker-container{
+  outline: none;
+}
+.date-picker-container {
   width: 4.5rem !important;
   color: white !important;
-  
 }
 
-.reserve-container form button{
+.reserve-container form button {
   width: 8rem;
   height: 2.8rem;
   background-color: #0000008a;
   border-radius: 8px;
 }
 
-.date-picker-container.icon{
+.date-picker-container.icon {
   color: white;
 }
 
-.react-datepicker__navigation{
+.react-datepicker__navigation {
   height: 0.5rem !important;
-width: 0.5rem !important;  
-color: black !important;
-padding: 0.75rem !important;
-margin: 0.2rem !important;
+  width: 0.5rem !important;
+  color: black !important;
+  padding: 0.75rem !important;
+  margin: 0.2rem !important;
 }
 
 .react-datepicker__calendar-icon {

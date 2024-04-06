@@ -3,13 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import "../css/app.css";
 import { useRouter } from 'next/navigation';
-import {NextIntlClientProvider} from 'next-intl';
+import { useLocale } from "next-intl";
+
 const ApartmentDisplay = ({ apartmentData }) => {
   const { id, imageUrl, guestsNumber, areaSize, apartmentName, description } =
     apartmentData;
     const router = useRouter();
 
-    const locale = router.locale;
+    const locale = useLocale();
 
   const truncatedDescription = description.split(" ").slice(0, 18).join(" ");
 

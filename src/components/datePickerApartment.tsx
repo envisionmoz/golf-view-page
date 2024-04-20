@@ -5,23 +5,22 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../css/app.css"; // Your custom CSS file for styling
 import { FaCalendarAlt } from "react-icons/fa";
-import { useRouter, useSearchParams} from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useFormatter } from "next-intl";
 
-type Props  ={
-  parameter:{childId: string; childPrice:number};
-  
-}
+type Props = {
+  parameter: { childId: string; childPrice: number };
+};
 
-function DatePickerApartment({parameter,}: Props) {
+function DatePickerApartment({ parameter }: Props) {
   const format = useFormatter();
 
   const router = useRouter();
   const locale = useLocale();
-const searchParams = useSearchParams();
- 
-const selectedCurrency = searchParams.get('currency');
+  const searchParams = useSearchParams();
+
+  const selectedCurrency = searchParams.get("currency") || "MZN";
 
   const [arrivalDate, setArrivalDate] = useState<Date | null>(null);
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
@@ -31,33 +30,32 @@ const selectedCurrency = searchParams.get('currency');
   const [numberOfAdults, setNumberOfAdults] = useState(1);
   const [numberOfChildren, setNumberOfChildren] = useState(0);
 
-  
   const [currencyOptions, SetCurrencyOptions] = useState([]);
   const [conversionRates, setConversionRates] = useState({});
 
   const BASE_URL =
-  "https://v6.exchangerate-api.com/v6/e38d9104cd321369e784a6d0/latest/MZN";
-useEffect(() => {
-  fetch(BASE_URL)
-    .then((res) => res.json())
-    .then((data) => {
-      const selectedCurrencies = [
-        "MZN",
-        "USD",
-        "EUR",
-        "ZAR",
-        "CNY",
-        "INR",
-        "BRL",
-      ];
-      const filteredOptions = selectedCurrencies.filter(
-        (curr) => data.conversion_rates[curr] !== undefined
-      );
-      SetCurrencyOptions(filteredOptions);
-      setConversionRates(data.conversion_rates);
-    })
-    .catch((error) => console.error("Error fetching currency data:", error));
-}, []);
+    "https://v6.exchangerate-api.com/v6/e38d9104cd321369e784a6d0/latest/MZN";
+  useEffect(() => {
+    fetch(BASE_URL)
+      .then((res) => res.json())
+      .then((data) => {
+        const selectedCurrencies = [
+          "MZN",
+          "USD",
+          "EUR",
+          "ZAR",
+          "CNY",
+          "INR",
+          "BRL",
+        ];
+        const filteredOptions = selectedCurrencies.filter(
+          (curr) => data.conversion_rates[curr] !== undefined
+        );
+        SetCurrencyOptions(filteredOptions);
+        setConversionRates(data.conversion_rates);
+      })
+      .catch((error) => console.error("Error fetching currency data:", error));
+  }, []);
 
   const increaseNumberOfChildren = () => {
     if (numberOfChildren <= 4) {
@@ -106,7 +104,7 @@ useEffect(() => {
 
   useEffect(() => {
     calculateTotalPrice();
-  },  [arrivalDate, departureDate, valor, numberOfAdults, numberOfChildren]);
+  }, [arrivalDate, departureDate, valor, numberOfAdults, numberOfChildren]);
 
   const calculateTotalPrice = () => {
     if (arrivalDate && departureDate) {
@@ -118,7 +116,9 @@ useEffect(() => {
 
       ///escrever a condicao para que o website cobre por visitantes extras
       if (numberOfAdults > 2 || numberOfChildren > 1) {
-        setTotalPrice(dailyPrice + 1 * taxaOcupacaoExtra + (days - 1) * taxaOcupacaoExtra );
+        setTotalPrice(
+          dailyPrice + 1 * taxaOcupacaoExtra + (days - 1) * taxaOcupacaoExtra
+        );
       } else {
         setTotalPrice(dailyPrice);
       }
@@ -128,28 +128,39 @@ useEffect(() => {
   };
 
   const handlePaymentClick = () => {
-    const queryParams = new URLSearchParams({
-      arrival: arrivalDate.toString().split(" ").slice(1, 4).join(" "),
-      departure: departureDate.toString().split(" ").slice(1, 4).join(" "),
-      apartment: parameter.childId,
-      guests:(numberOfAdults + numberOfChildren).toString(),
-      totalPrice: convertedTotal.toString()
-    }).toString();
-    router.push(`/${locale}/checkout?${queryParams}`);
+    if (arrivalDate == null && departureDate == null) {
+      alert("Insert all the days");
+    } else {
+      const queryParams = new URLSearchParams({
+        arrival: arrivalDate.toString().split(" ").slice(1, 4).join(" "),
+        departure: departureDate.toString().split(" ").slice(1, 4).join(" "),
+        apartment: parameter.childId,
+        guests: (numberOfAdults + numberOfChildren).toString(),
+        totalPrice: convertedTotal.toString(),
+      }).toString();
+      router.push(`/${locale}/checkout?currency=${selectedCurrency}&${queryParams}`);
+    }
   };
-  
-  const convertedTotal = format.number(totalPrice, {style: 'currency', currency:selectedCurrency});
-const convertedtaxaOcupacaoExtra = format.number(taxaOcupacaoExtra, {style: 'currency', currency:selectedCurrency});
-const convertedDaily = format.number(valor, {style: 'currency', currency:selectedCurrency});
 
-// useEffect (()=>{
-//   if (conversionRates[selectedCurrency]) {
-//     taxaOcupacaoExtra * conversionRates[selectedCurrency];
-//     parameter.childPrice * conversionRates[selectedCurrency];
-//   }
-// },[])
+  const convertedTotal = format.number(totalPrice, {
+    style: "currency",
+    currency: selectedCurrency,
+  });
+  const convertedtaxaOcupacaoExtra = format.number(taxaOcupacaoExtra, {
+    style: "currency",
+    currency: selectedCurrency,
+  });
+  const convertedDaily = format.number(valor, {
+    style: "currency",
+    currency: selectedCurrency,
+  });
 
-
+  // useEffect (()=>{
+  //   if (conversionRates[selectedCurrency]) {
+  //     taxaOcupacaoExtra * conversionRates[selectedCurrency];
+  //     parameter.childPrice * conversionRates[selectedCurrency];
+  //   }
+  // },[])
 
   return (
     <div className="calendar-section-container">
@@ -259,7 +270,9 @@ const convertedDaily = format.number(valor, {style: 'currency', currency:selecte
           </div>
         </div>
 
-        <button onClick={handlePaymentClick} className="process-payment">Proceder Para o Pagamento</button>
+        <button onClick={handlePaymentClick} className="process-payment">
+          Proceder Para o Pagamento
+        </button>
       </div>
     </div>
   );

@@ -3,14 +3,14 @@ import React from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { useLocale } from "next-intl";
 import { useEffect } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "../../../css/app.css";
-import Currencypage from "../../../components/currency";
-import currencyPage from "../../../components/currency";
-// {params} : {params: {arrival:string, departure: string, apartment:string, guests:string, totalPrice:string}}
-function page() {
+import { GetServerSideProps } from "next";
+import { prisma } from "../../../lib/prisma";
+export default function page() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -18,6 +18,12 @@ function page() {
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [specialRequests, setSpecialRequests] = useState('');
+
+  // Function to handle changes in the textarea
+  const handleTextareaChange = (event) => {
+    setSpecialRequests(event.target.value);
+  };
 
   const validateFirstName = (value: string) => {
     if (!value) {
@@ -28,7 +34,6 @@ function page() {
     return "";
   };
 
-  
   const validateLastName = (value: string) => {
     if (!value) {
       return "Por favor, insira o seu apelido.";
@@ -49,51 +54,141 @@ function page() {
 
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    const error = validateFirstName(value);
     setFirstName(value);
-    setFirstNameError(validateFirstName(value));
+    setFirstNameError(error);
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    const error = validateLastName(value);
     setLastName(value);
-    setLastNameError(validateLastName(value));
+    setLastNameError(error);
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    const error = validateEmail(value);
     setEmail(value);
-    setEmailError(validateEmail(value));
+    setEmailError(error);
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const localActive = useLocale();
+  //Data submission
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
 
-    // Check if the button is disabled
-    if (!firstNameError || !lastNameError || !emailError) {
-      // Here, you can submit the form data using an API call or any other method
-      alert("Form submitted!");
-      
-      console.log("First Name:", firstName);
-      console.log("Last Name:", lastName);
-      console.log("Email:", email);
-
-      // Optionally, you can reset the form fields
-      setFirstName("");
-      setLastName("");
-      setEmail("");
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      email === "" ||
+      emailError ||
+      firstNameError ||
+      lastNameError
+    ) {
+      alert("Check your inputs");
     } else {
-      console.log("something went wrong")// Do not submit the form if there are errors
+      try {
+        console.log(localActive);
+                console.log(
+                  firstName,
+                  lastName,
+                  email,
+                  phoneNumber,
+                  apartment,
+                  dbReadyTotalPrice,
+                  guests,
+                  formattedArrival,
+                  formattedDeparture
+                );
+
+        const response = await fetch(`/${localActive}/api/reservation`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            email,
+            phoneNumber,
+            apartment,
+            dbReadyTotalPrice,
+            guests,
+            formattedArrival,
+            formattedDeparture,
+            specialRequests,
+          }),
+        });
+
+        if (response.ok) {
+          const { reservation, guest } = await response.json();
+          console.log("Reservation created:", reservation);
+          console.log("Guest created:", guest);
+        } else {
+          console.error("Error:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     }
   };
-
   const router = useRouter();
   const searchParams = useSearchParams();
+  const selectedCurrency = searchParams.get("currency");
+  const [currencyOptions, SetCurrencyOptions] = useState([]);
+  const [conversionRates, setConversionRates] = useState({});
 
-  const apartment = searchParams.get("apartment");
+  const BASE_URL = `https://v6.exchangerate-api.com/v6/e38d9104cd321369e784a6d0/latest/${selectedCurrency}`;
+  useEffect(() => {
+    fetch(BASE_URL)
+      .then((res) => res.json())
+      .then((data) => {
+        const selectedCurrencies = [
+          "MZN",
+          "USD",
+          "EUR",
+          "ZAR",
+          "CNY",
+          "INR",
+          "BRL",
+        ];
+        const filteredOptions = selectedCurrencies.filter(
+          (curr) => data.conversion_rates[curr] !== undefined
+        );
+        SetCurrencyOptions(filteredOptions);
+        setConversionRates(data.conversion_rates);
+      })
+      .catch((error) => console.error("Error fetching currency data:", error));
+  }, []);
+
+  const apartment = parseInt(searchParams.get("apartment"));
   const arrival = searchParams.get("arrival");
   const departure = searchParams.get("departure");
-  const guests = searchParams.get("guests");
+  const guests = parseInt(searchParams.get("guests"));
   const totalPrice = searchParams.get("totalPrice");
 
+  const numericPart = totalPrice.replace(/[^0-9.,-]/g, "");
+  const dbReadyTotalPrice =
+    Math.round(parseFloat(numericPart) * conversionRates["MZN"]);
+  function formatDate(dateString) {
+    // Create a new Date object with the date string
+    let date = new Date(dateString);
+
+    // Extract year, month, and day from the date object
+    let year = date.getFullYear();
+    let month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    let day = String(date.getDate()).padStart(2, "0");
+
+    // Format the date as YYYY-MM-DD
+    let formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
+  }
+  const formattedArrival = formatDate(arrival);
+  const formattedDeparture = formatDate(departure);
   const handleClick = () => {
     router.back();
   };
@@ -170,7 +265,11 @@ function page() {
             </div>
             <div className="client-detail">
               <label>Seus pedidos especiais</label>
-              <textarea placeholder="Explique o seu pedido: hora de chegada, alergia alimentar,etc" />
+              <textarea
+                placeholder="Explique o seu pedido: hora de chegada, alergia alimentar,etc"
+                value={specialRequests}
+                onChange={handleTextareaChange}
+              />
             </div>
           </form>
           <div>
@@ -215,5 +314,3 @@ function page() {
     </div>
   );
 }
-
-export default page;

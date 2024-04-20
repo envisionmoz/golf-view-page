@@ -11,7 +11,11 @@
     "Title": "RECEIVE LUXURY AND COMFORT",
     "Subtitle": "Welcome to the place where luxury meets accessibility"
   },
-  "Apartments": {"Title": "Our Accommmodations"},
+  "Apartments": {
+    "Title": "Our Accommmodations",
+    "GUEST": "Guests",
+    "BOOK": "Book Now"
+  },
   "Amenities": {
     "Title": "Enjoy Our Amenities",
     "Description": "As a guest of Golf View, we welcome you to enjoy our amenities:",
@@ -22,7 +26,15 @@
     "Breakfast": "Breakfast (additional cost)"
   },
   "Footer": {
-    "Terms" : "Terms and conditions",
-    "Info" : "More information"
+    "Terms": "Terms and conditions",
+    "Info": "More information"
+  },
+  "Apartment": {
+    "APARTMENT_STANDARD": "Standard Apartment",
+    "APARTMENT_DELUXE": "Deluxe Apartment",
+    "APARTMENT_PREMIUM": "Premium Apartment",
+    "APARTMENT_STANDARD_DESCRIPTION": "This magnificent and refined apartment features two elegant bedrooms, one of them being a suite, providing maximum comfort. The spacious living room is ideal for socializing, while the kitchen, spacious and functional, meets the most demanding culinary needs. In addition, it has an independent laundry area, ensuring practicality and organization. Its privileged location allows you to enjoy the proximity to the beach, just 15 minutes away, providing a unique and luxurious residential experience.",
+    "APARTMENT_DELUXE_DESCRIPTION": "This magnificent and refined apartment features two elegant bedrooms, one of them being a suite, providing maximum comfort. The spacious living room is ideal for socializing, while the kitchen, spacious and functional, meets the most demanding culinary needs. In addition, it has an independent laundry area, ensuring practicality and organization. Its privileged location allows you to enjoy the proximity to the beach, just 15 minutes away, providing a unique and luxurious residential experience.",
+    "APARTMENT_PREMIUM_DESCRIPTION": "This magnificent and refined apartment features two elegant bedrooms, one of them being a suite, providing maximum comfort. The spacious living room is ideal for socializing, while the kitchen, spacious and functional, meets the most demanding culinary needs. In addition, it has an independent laundry area, ensuring practicality and organization. Its privileged location allows you to enjoy the proximity to the beach, just 15 minutes away, providing a unique and luxurious residential experience."
   }
 }

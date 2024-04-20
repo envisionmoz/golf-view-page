@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+   previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model apartment {
+  apartment_id Int           @id @default(autoincrement())
+  price        Decimal       @db.Decimal(10, 2)
+  num_bedrooms Int
+  reservation  reservation[]
+}
+
+model guest {
+  guest_id       Int         @id @default(autoincrement())
+  reservation_id Int
+  name           String      @db.VarChar(100)
+  email          String      @db.VarChar(100)
+  phone_number   String      @db.VarChar(20)
+  reservation    reservation @relation(fields: [reservation_id], references: [reservation_id], onUpdate: Restrict, map: "guest_ibfk_1")
+
+  @@index([reservation_id], map: "reservation_id")
+}
+
+model reservation {
+  reservation_id   Int       @id @default(autoincrement())
+  apartment_id     Int
+  arrival_date     DateTime  @db.Date
+  departure_date   DateTime  @db.Date
+  total_price      Decimal   @db.Decimal(10, 2)
+  num_guests       Int
+  special_requests String?   @db.Text
+  guest            guest[]
+  apartment        apartment @relation(fields: [apartment_id], references: [apartment_id], onUpdate: Restrict, map: "reservation_ibfk_1")
+
+  @@index([apartment_id], map: "apartment_id")
+}

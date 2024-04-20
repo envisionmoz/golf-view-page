@@ -9,6 +9,8 @@ import DatePickerApartment from "../../../../components/datePickerApartment";
 import Ameneties from "../../../../components/Ameneties";
 import apartmentData from "../../../../components/apartmentData";
 import { useSearchParams } from 'next/navigation';
+import { useTranslations } from "next-intl";
+
 function page({ params }: { params: { id: string } }) {
   const searchParams = useSearchParams();
 
@@ -43,6 +45,7 @@ function page({ params }: { params: { id: string } }) {
 
     const childPrice = apartment.price;
 
+    const t = useTranslations("Apartment");
 
   return (
     <>
@@ -123,7 +126,7 @@ function page({ params }: { params: { id: string } }) {
         <div className="description">
           <h2>Descricao</h2>
           <p>
-            {description}
+            {t(description)}
           </p>
         </div>
         <Ameneties/>

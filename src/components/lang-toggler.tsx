@@ -74,6 +74,7 @@ const activeCurrency = searchParams.get('currency');
       });
     } else {
       window.location.reload();
+      
     }
     setIsButtonClicked(true);
     console.log("the locale is", selectedLocale, "the page is:", currentPage);
@@ -93,7 +94,7 @@ const activeCurrency = searchParams.get('currency');
               disabled={isButtonClicked}
               onChange={onSelectChange}
             >
-              <option value={null}> Selecione O Idioma</option>
+              <option value={localActive}> Selecione O Idioma</option>
               <option value="pt">Português</option>
               <option value="en">English</option>
             </select>
@@ -104,7 +105,7 @@ const activeCurrency = searchParams.get('currency');
               disabled={isButtonClicked}
               onChange={onCurrencyChange}
             >
-              <option value={"MZN"}>Selecione a sua moeda desejada</option>
+              <option value="MZN">Selecione a sua moeda desejada</option>
 
               {currencyOptions.map((currency) => (
                 <option key={currency} value={currency}>

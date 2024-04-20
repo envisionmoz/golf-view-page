@@ -12,7 +12,9 @@
     "Subtitle": "Seja Bem Vindo Ao Sitio Que Luxo Se Encontra A Acessibilidade "
   },
   "Apartments": {
-    "Title": "Nossas Acomodacoes"
+    "Title": "Nossas Acomodacoes",
+    "GUEST": "Hospedes",
+    "BOOK": "Reservar Agora"
   },
   "Amenities": {
     "Title": "Aproveite Nossas Comodidades",
@@ -26,5 +28,14 @@
   "Footer": {
     "Terms" : "Termos e condicoes",
     "Info" : "Informacoes da empresa"
+  },
+  "Apartment":{
+    "APARTMENT_STANDARD": "Apartamento Standard",
+    "APARTMENT_DELUXE": "Apartamento Deluxe",
+    "APARTMENT_PREMIUM": "Apartamento Premium",
+    "APARTMENT_STANDARD_DESCRIPTION": "Este magnífico e refinado apartamento possui dois quartos elegantes, sendo um deles uma suíte, proporcionando o máximo conforto. A espaçosa sala de estar é ideal para socializar, enquanto a cozinha, espaçosa e funcional, atende às necessidades culinárias mais exigentes. Além disso, possui uma área de serviço independente, garantindo praticidade e organização. Sua localização privilegiada permite desfrutar da proximidade com a praia, a apenas 15 minutos de distância, proporcionando uma experiência residencial única e luxuosa.",
+    "APARTMENT_DELUXE_DESCRIPTION": "Este magnífico e refinado apartamento possui dois quartos elegantes, sendo um deles uma suíte, proporcionando o máximo conforto. A espaçosa sala de estar é ideal para socializar, enquanto a cozinha, espaçosa e funcional, atende às necessidades culinárias mais exigentes. Além disso, possui uma área de serviço independente, garantindo praticidade e organização. Sua localização privilegiada permite desfrutar da proximidade com a praia, a apenas 15 minutos de distância, proporcionando uma experiência residencial única e luxuosa.",
+    "APARTMENT_PREMIUM_DESCRIPTION": "Este magnífico e refinado apartamento possui dois quartos elegantes, sendo um deles uma suíte, proporcionando o máximo conforto. A espaçosa sala de estar é ideal para socializar, enquanto a cozinha, espaçosa e funcional, atende às necessidades culinárias mais exigentes. Além disso, possui uma área de serviço independente, garantindo praticidade e organização. Sua localização privilegiada permite desfrutar da proximidade com a praia, a apenas 15 minutos de distância, proporcionando uma experiência residencial única e luxuosa."
   }
+  
 }

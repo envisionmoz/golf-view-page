@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-
 function currencyPage() {
   const BASE_URL =
     "https://v6.exchangerate-api.com/v6/4d8b22b0e7ac78a0bde870fb/latest/MZN";
@@ -27,9 +26,7 @@ function currencyPage() {
     setSelectedCurrency(currency);
     
     // Update booking price based on the selected currency
-    if (conversionRates[currency]) {
-      setBookingPrice(3500 * conversionRates[currency]);
-    }
+
   };
 
   return (
@@ -44,7 +41,6 @@ function currencyPage() {
           ))}
         </select>
       </div>
-
 
 
       {selectedCurrency && (

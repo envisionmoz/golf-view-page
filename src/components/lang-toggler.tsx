@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link, usePathname } from "../../navigation";
 import { useEffect, useState, useTransition, ChangeEvent } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
 import "../css/popup.css";
 import { FaGlobe } from "react-icons/fa";
+import LangButton from "./langbutton";
 
 interface LanguageTogglerProps {
   isOverlayVisible: boolean;
@@ -16,17 +17,20 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({
 }) => {
   const localActive = useLocale();
   const router = useRouter();
-  const BASE_URL =
-    "https://v6.exchangerate-api.com/v6/4d8b22b0e7ac78a0bde870fb/latest/MZN";
+const searchParams = useSearchParams();
+
+const activeCurrency = searchParams.get('currency');
+  // const price
   const [currencyOptions, SetCurrencyOptions] = useState([]);
   const [selectedCurrency, setSelectedCurrency] = useState("MZN");
   const [conversionRates, setConversionRates] = useState({});
   const [bookingPrice, setBookingPrice] = useState(3500);
   const [isPending, startTransition] = useTransition();
-  const [selectedLocale, setSelectedLocale] = useState("");
+  const [selectedLocale, setSelectedLocale] = useState(null);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
-  console.log(currencyOptions);
+  const BASE_URL =
+  "https://v6.exchangerate-api.com/v6/e38d9104cd321369e784a6d0/latest/MZN";
   useEffect(() => {
     fetch(BASE_URL)
       .then((res) => res.json())
@@ -49,38 +53,32 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({
       .catch((error) => console.error("Error fetching currency data:", error));
   }, []);
 
-  // useEffect(() => {
-  //   console.log("the currency is", selectedCurrency);
-
-  //   // Update booking price based on the selected currency
-  //   if (conversionRates[selectedCurrency]) {
-  //     setBookingPrice(3500 * conversionRates[selectedCurrency]);
-  //   }
-  // }, [selectedCurrency, conversionRates]);
-
   const onCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const currency = e.target.value;
     setSelectedCurrency(currency);
-    // Update booking price based on the selected currency
-    if (conversionRates[currency]) {
-      setBookingPrice(3500 * conversionRates[currency]);
-    }
   };
+
   const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const nextLocale = e.target.value;
     setSelectedLocale(nextLocale);
   };
+  const localePrefix = "/pt";
 
+  const currentPage = window.location.pathname.substring(localePrefix.length);
   const handleAlterarClick = () => {
-    if (localActive != selectedLocale) {
+    if (localActive != selectedLocale && selectedLocale != null) {
       startTransition(() => {
-        router.replace(`/${selectedLocale}`);
+        router.replace(
+          `/${selectedLocale}/${currentPage}/?currency=${selectedCurrency}`
+        );
       });
-    }else{
+    } else {
       window.location.reload();
     }
     setIsButtonClicked(true);
+    console.log("the locale is", selectedLocale, "the page is:", currentPage);
   };
+
 
   return (
     <>
@@ -95,7 +93,7 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({
               disabled={isButtonClicked}
               onChange={onSelectChange}
             >
-              <option> Selecione O Idioma</option>
+              <option value={null}> Selecione O Idioma</option>
               <option value="pt">Português</option>
               <option value="en">English</option>
             </select>
@@ -106,7 +104,7 @@ const LanguageToggler: React.FC<LanguageTogglerProps> = ({
               disabled={isButtonClicked}
               onChange={onCurrencyChange}
             >
-              <option>Selecione a sua moeda desejada</option>
+              <option value={"MZN"}>Selecione a sua moeda desejada</option>
 
               {currencyOptions.map((currency) => (
                 <option key={currency} value={currency}>

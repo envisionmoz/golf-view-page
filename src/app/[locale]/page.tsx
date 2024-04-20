@@ -3,7 +3,6 @@ import Navbar from "../../components/navbar";
 import {useTranslations} from 'next-intl';
 import Apartments from "../../components/apartments";
 import Location from "../../components/location";
-import Currency from "../../components/currency";
 import Footer from "../../components/footer";2
 import { FaWifi, FaParking, FaSwimmingPool,FaBroom,FaBreadSlice  } from "react-icons/fa";
 import "../../css/app.css"
@@ -45,7 +44,6 @@ export default function Home() {
       <Location/>
       </div>
       <Footer/>
-      {/* <Currency/> */}
     </main>
   );
 }

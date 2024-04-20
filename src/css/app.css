@@ -2,6 +2,13 @@
   margin: 0;
   padding: 0;
 }
+
+input,
+textarea,
+select:focus {
+  outline: none;
+  background-color: none;
+}
 ul li {
   list-style: none;
 }
@@ -464,7 +471,7 @@ nav li {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.95); 
+  background-color: rgba(0, 0, 0, 0.95);
   justify-content: center;
   align-items: center;
   display: flex;
@@ -474,19 +481,95 @@ nav li {
 .full-image {
   max-width: 90%;
   max-height: 90%;
-  cursor:default;
-
+  cursor: default;
 }
 
 body.full-image-overlay-active {
   overflow: hidden;
 }
 
-.close-button{
+.close-button {
   position: fixed;
-background: none;
-border: none;
-color: rgba(255, 255, 255, 0.685);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.685);
   top: 2rem;
-  right:2rem;
+  right: 2rem;
+}
+
+.check-out-container {
+  padding: 2rem 6rem;
+  display: grid;
+  gap: 1rem;
+}
+.back-btn {
+  color: #000000;
+}
+.check-out-boxes-container {
+  display: flex;
+  width: 100%;
+  gap: 2rem;
+}
+.client-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 70%;
+  padding: 2rem 2rem;
+  background-color: #aeaea425;
+  border-radius: 4px;
+  border: 1px solid #aeaea44b;
+}
+.client-box form {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 2rem;
+}
+
+.client-detail {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.client-detail input {
+  border: none;
+  border-bottom: 1px solid #aeaea4;
+  background: none;
+  padding: 0 0 1rem 0;
+}
+.client-detail textarea {
+  width: 210%;
+  border: none;
+  border-bottom: 1px solid #aeaea4;
+  background: none;
+  padding: 0 0 1rem 0;
+  resize: none;
+}
+
+.process-container {
+  width: 30%;
+  display: grid;
+  gap: 6rem;
+}
+.process-container button {
+  width: 100%;
+  height: 2.5rem;
+  background-color: black;
+  border-radius: 8px;
+  font-size: 0.8em;
+  color: white;
+  font-weight: 600;
+  border: none !important;
+}
+
+.check-out-boxes-container .reserve-info-container {
+  width: 100%;
+  padding: 2.5rem 2rem;
+  border: 1px solid #aeaea44b;
+  box-shadow: none;
+  display: grid;
+  gap: 2.5rem;
 }

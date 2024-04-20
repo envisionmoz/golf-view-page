@@ -1,3 +1,4 @@
+import { NextIntlClientProvider, useMessages } from "next-intl";
 
 export const metadata = {
   title: "Golf-View",
@@ -8,12 +9,18 @@ export default function RootLayout({
   children,
   params: { locale },
 }: {
-  children: React.ReactNode,
-  params: { locale: string },
+  children: React.ReactNode;
+  params: { locale: string };
 }) {
+  const messages = useMessages();
+
   return (
     <html lang={locale}>
-      <body>{children}</body>
+      <body>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
     </html>
   );
 }

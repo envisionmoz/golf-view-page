@@ -1,7 +1,6 @@
 "use client"
 import React from 'react'
 import { useState } from 'react';
-import Image from "next/image";
 import Navbar from "../../../../components/navbar";
 import "../../../../css/app.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,12 +8,14 @@ import Footer from "../../../../components/footer";
 import DatePickerApartment from "../../../../components/datePickerApartment";
 import Ameneties from "../../../../components/Ameneties";
 import apartmentData from "../../../../components/apartmentData";
-
+import { useSearchParams } from 'next/navigation';
 function page({ params }: { params: { id: string } }) {
-  // const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
 
   // const apartmentId = searchParams.get('id')
       const [fullImageSrc, setFullImageSrc] = useState('');
+      const selectedCurrency = searchParams.get('currency');
+      console.log("the selected currency is ", selectedCurrency)
 
     const displayFullImage = (src) => {
       setFullImageSrc(src);
@@ -25,7 +26,6 @@ function page({ params }: { params: { id: string } }) {
       setFullImageSrc('');
       document.body.classList.remove('full-image-overlay-active');
     }
-  params.id;
 
   console.log("The id is:", params.id);
 
@@ -37,8 +37,12 @@ function page({ params }: { params: { id: string } }) {
     return <div>Apartment nr {params.id} not found here </div>;
   }
 
-  const { imageUrl, guestsNumber, areaSize, apartmentName, description } =
+  const { imageUrl, guestsNumber, areaSize, apartmentName, description, price} =
     apartment;
+    const childId = apartment.id;
+
+    const childPrice = apartment.price;
+
 
   return (
     <>
@@ -51,8 +55,6 @@ function page({ params }: { params: { id: string } }) {
                 src={"/images/apartments/1/bedroom.jpg"}
                 alt="bedroom"
                 className="image"
-                width={2080}
-                height={2080}
                 onClick={() =>
                   displayFullImage("/images/apartments/1/bedroom.jpg")
                 }
@@ -65,8 +67,6 @@ function page({ params }: { params: { id: string } }) {
                 src={"/images/apartments/1/bathtub.jpg"}
                 alt="bathtub"
                 className="image"
-                width={1080}
-                height={1080}
                 onClick={() =>
                   displayFullImage("/images/apartments/1/bathtub.jpg")
                 }
@@ -77,8 +77,6 @@ function page({ params }: { params: { id: string } }) {
                 src={"/images/apartments/1/kitchen.jpg"}
                 alt="kitchen"
                 className="image"
-                width={1080}
-                height={1080}
                 onClick={() =>
                   displayFullImage("/images/apartments/1/kitchen.jpg")
                 }
@@ -89,8 +87,6 @@ function page({ params }: { params: { id: string } }) {
                 src={"/images/apartments/1/living-room.jpg"}
                 alt="living room"
                 className="image"
-                width={1080}
-                height={1080}
                 onClick={() =>
                   displayFullImage("/images/apartments/1/living-room.jpg")
                 }
@@ -101,8 +97,6 @@ function page({ params }: { params: { id: string } }) {
                 src={"/images/apartments/1/sink.jpg"}
                 alt="sink"
                 className="image"
-                width={1080}
-                height={1080}
                 onClick={() =>
                   displayFullImage("/images/apartments/1/sink.jpg")
                 }
@@ -135,10 +129,10 @@ function page({ params }: { params: { id: string } }) {
         <Ameneties/>
         <div className="price">
           <h4>Preco Por Noite</h4>
-          <p>3500.00MZN</p>
+          <p>{price}.00MZN</p>
         </div>
       </div>
-      <DatePickerApartment />
+      <DatePickerApartment parameter={{childId, childPrice}}/>
       <Footer></Footer>
     </>
   );

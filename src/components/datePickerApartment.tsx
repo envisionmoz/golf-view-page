@@ -5,8 +5,24 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../css/app.css"; // Your custom CSS file for styling
 import { FaCalendarAlt } from "react-icons/fa";
+import { useRouter, useSearchParams} from "next/navigation";
+import { useLocale } from "next-intl";
+import { useFormatter } from "next-intl";
 
-function DatePickerApartment() {
+type Props  ={
+  parameter:{childId: string; childPrice:number};
+  
+}
+
+function DatePickerApartment({parameter,}: Props) {
+  const format = useFormatter();
+
+  const router = useRouter();
+  const locale = useLocale();
+const searchParams = useSearchParams();
+ 
+const selectedCurrency = searchParams.get('currency');
+
   const [arrivalDate, setArrivalDate] = useState<Date | null>(null);
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
   const [numberOfExtraGuests, setNumberOfExtraGuests] = useState(0);
@@ -14,6 +30,34 @@ function DatePickerApartment() {
 
   const [numberOfAdults, setNumberOfAdults] = useState(1);
   const [numberOfChildren, setNumberOfChildren] = useState(0);
+
+  
+  const [currencyOptions, SetCurrencyOptions] = useState([]);
+  const [conversionRates, setConversionRates] = useState({});
+
+  const BASE_URL =
+  "https://v6.exchangerate-api.com/v6/e38d9104cd321369e784a6d0/latest/MZN";
+useEffect(() => {
+  fetch(BASE_URL)
+    .then((res) => res.json())
+    .then((data) => {
+      const selectedCurrencies = [
+        "MZN",
+        "USD",
+        "EUR",
+        "ZAR",
+        "CNY",
+        "INR",
+        "BRL",
+      ];
+      const filteredOptions = selectedCurrencies.filter(
+        (curr) => data.conversion_rates[curr] !== undefined
+      );
+      SetCurrencyOptions(filteredOptions);
+      setConversionRates(data.conversion_rates);
+    })
+    .catch((error) => console.error("Error fetching currency data:", error));
+}, []);
 
   const increaseNumberOfChildren = () => {
     if (numberOfChildren <= 4) {
@@ -42,8 +86,8 @@ function DatePickerApartment() {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const valor = 3500;
-  const taxaOcupacaoExtra = 1000;
+  const valor = parameter.childPrice * conversionRates[selectedCurrency];
+  const taxaOcupacaoExtra = 1000 * conversionRates[selectedCurrency];
   const minArrivalDate = new Date(); // Today
   const maxDepartureDate = new Date();
   maxDepartureDate.setMonth(maxDepartureDate.getMonth() + 6); // Six months from today
@@ -62,7 +106,7 @@ function DatePickerApartment() {
 
   useEffect(() => {
     calculateTotalPrice();
-  }, [arrivalDate, departureDate]);
+  },  [arrivalDate, departureDate, valor, numberOfAdults, numberOfChildren]);
 
   const calculateTotalPrice = () => {
     if (arrivalDate && departureDate) {
@@ -74,7 +118,7 @@ function DatePickerApartment() {
 
       ///escrever a condicao para que o website cobre por visitantes extras
       if (numberOfAdults > 2 || numberOfChildren > 1) {
-        setTotalPrice(dailyPrice + 1 * 1000 + (days - 1) * 1000);
+        setTotalPrice(dailyPrice + 1 * taxaOcupacaoExtra + (days - 1) * taxaOcupacaoExtra );
       } else {
         setTotalPrice(dailyPrice);
       }
@@ -83,21 +127,29 @@ function DatePickerApartment() {
     }
   };
 
-  const handleReserve = () => {
-    // Here you can implement logic to process and show data
-    // that fits the description and availability
-    console.log(
-      "Arrival Date:",
-      arrivalDate.toString().split(" ").slice(1, 4).join(" ")
-    );
-    console.log(
-      "Departure Date:",
-      departureDate.toString().split(" ").slice(1, 4).join(" ")
-    );
-    console.log("Valor diario:", valor);
-    console.log("Total amount:", totalPrice);
-    console.log("Number of Guests:", numberOfAdults+numberOfChildren );
+  const handlePaymentClick = () => {
+    const queryParams = new URLSearchParams({
+      arrival: arrivalDate.toString().split(" ").slice(1, 4).join(" "),
+      departure: departureDate.toString().split(" ").slice(1, 4).join(" "),
+      apartment: parameter.childId,
+      guests:(numberOfAdults + numberOfChildren).toString(),
+      totalPrice: convertedTotal.toString()
+    }).toString();
+    router.push(`/${locale}/checkout?${queryParams}`);
   };
+  
+  const convertedTotal = format.number(totalPrice, {style: 'currency', currency:selectedCurrency});
+const convertedtaxaOcupacaoExtra = format.number(taxaOcupacaoExtra, {style: 'currency', currency:selectedCurrency});
+const convertedDaily = format.number(valor, {style: 'currency', currency:selectedCurrency});
+
+// useEffect (()=>{
+//   if (conversionRates[selectedCurrency]) {
+//     taxaOcupacaoExtra * conversionRates[selectedCurrency];
+//     parameter.childPrice * conversionRates[selectedCurrency];
+//   }
+// },[])
+
+
 
   return (
     <div className="calendar-section-container">
@@ -162,26 +214,6 @@ function DatePickerApartment() {
               <button onClick={increaseNumberOfChildren}>+</button>
             </div>
           </div>
-
-          {/* <select
-            value={numberOfGuests}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (
-                value === "" ||
-                (parseInt(value) > 0 && !isNaN(parseInt(value)))
-              ) {
-                setNumberOfGuests(parseInt(value));
-              }
-            }}
-          >
-            <option value="0" style={{ color: "white !important" }}>
-              Extra Guests
-            </option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select> */}
         </div>
         <div></div>
       </div>
@@ -207,26 +239,27 @@ function DatePickerApartment() {
             </div>
             <div className="info">
               <p>Apartamento:</p>
-              <p>O dia</p>
+              <p>{parameter.childId}</p>
             </div>
           </div>
           <div className="reserva-factura">
             <div>
               <p>Diaria Do Apartamento:</p>
-              <p>{valor} MZN</p>
+              <p>{convertedDaily}</p>
             </div>
             <div>
               <p>Taxa de Ocupacao Extra(Diaria):</p>
-              <p>{taxaOcupacaoExtra} MZN</p>
+              <p>{convertedtaxaOcupacaoExtra}</p>
             </div>
             <div>
               <p>Total:</p>
-              <p>{totalPrice} MZN</p>
+              {/* <p>{totalPrice}</p> */}
+              <p>{convertedTotal}</p>
             </div>
           </div>
         </div>
 
-        <button onClick={handleReserve} className="process-payment">Proceder Para o Pagamento</button>
+        <button onClick={handlePaymentClick} className="process-payment">Proceder Para o Pagamento</button>
       </div>
     </div>
   );

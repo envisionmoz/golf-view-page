@@ -8,9 +8,11 @@ import { useEffect } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "../../../css/app.css";
-import { GetServerSideProps } from "next";
-import { prisma } from "../../../lib/prisma";
+import { useFormatter } from "next-intl";
+
 export default function page() {
+    const format = useFormatter();
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -18,11 +20,15 @@ export default function page() {
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [specialRequests, setSpecialRequests] = useState('');
+  const [specialRequests, setSpecialRequests] = useState("");
 
   // Function to handle changes in the textarea
   const handleTextareaChange = (event) => {
-    setSpecialRequests(event.target.value);
+    if ((event.target.value = "")) {
+      event.target.value = "Nenhum pedido especial";
+    } else {
+      setSpecialRequests(event.target.value);
+    }
   };
 
   const validateFirstName = (value: string) => {
@@ -75,9 +81,7 @@ export default function page() {
 
   const localActive = useLocale();
   //Data submission
-  const handleSubmit = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     if (
@@ -91,50 +95,44 @@ export default function page() {
       alert("Check your inputs");
     } else {
       try {
-        console.log(localActive);
-                console.log(
-                  firstName,
-                  lastName,
-                  email,
-                  phoneNumber,
-                  apartment,
-                  dbReadyTotalPrice,
-                  guests,
-                  formattedArrival,
-                  formattedDeparture
-                );
 
-        const response = await fetch(`/${localActive}/api/reservation`, {
+        const mybody = {
+          guest_name: firstName + " " + lastName,
+          guest_email: email,
+          guest_phone: phoneNumber,
+          apartment: apartment,
+          total_price: dbReadyTotalPrice,
+          num_guests: guests,
+          arrival_date: formattedArrival,
+          departure_date: formattedDeparture,
+          special_requests: specialRequests,
+        };
+        console.log(
+          mybody
+        );
+
+        const res = await fetch(`/${localActive}/api/reservation`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            apartment,
-            dbReadyTotalPrice,
-            guests,
-            formattedArrival,
-            formattedDeparture,
-            specialRequests,
+            guest_name: firstName + " " + lastName,
+            guest_email: email,
+            guest_phone: phoneNumber,
+            apartment: apartment,
+            total_price: dbReadyTotalPrice,
+            num_guests: guests,
+            arrival_date: formattedArrival,
+            departure_date: formattedDeparture,
+            special_requests: specialRequests,
           }),
         });
 
-        if (response.ok) {
-          const { reservation, guest } = await response.json();
-          console.log("Reservation created:", reservation);
-          console.log("Guest created:", guest);
-        } else {
-          console.error("Error:", response.statusText);
-        }
+        console.log("here is", res);
       } catch (error) {
         console.error("Error:", error);
       }
     }
-  };
+  }
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedCurrency = searchParams.get("currency");
@@ -169,10 +167,13 @@ export default function page() {
   const departure = searchParams.get("departure");
   const guests = parseInt(searchParams.get("guests"));
   const totalPrice = searchParams.get("totalPrice");
+  const dbReadyTotalPrice = parseInt(totalPrice) * conversionRates["MZN"];
+  console.log(totalPrice, dbReadyTotalPrice);
+  const convertedTotal = format.number(parseInt(totalPrice), {
+    style: "currency",
+    currency: selectedCurrency,
+  });
 
-  const numericPart = totalPrice.replace(/[^0-9.,-]/g, "");
-  const dbReadyTotalPrice =
-    Math.round(parseFloat(numericPart) * conversionRates["MZN"]);
   function formatDate(dateString) {
     // Create a new Date object with the date string
     let date = new Date(dateString);
@@ -192,11 +193,8 @@ export default function page() {
   const handleClick = () => {
     router.back();
   };
-  const handleOnChange = (value, country) => {
-    // `value` will contain the phone number entered
-    // `country` will contain the country code of the selected country
+  const handleOnChange = (value) => {
     setPhoneNumber(value);
-    console.log(phoneNumber);
   };
   return (
     <div className="check-out-container">
@@ -206,7 +204,7 @@ export default function page() {
       </Link>
       <div className="check-out-boxes-container">
         <div className="client-box">
-          <form>
+          <form id="reservation" onSubmit={handleSubmit}>
             <div className="client-detail">
               <label>Primeiro Nome *</label>
               <input
@@ -305,10 +303,12 @@ export default function page() {
             </div>
             <div className="info">
               <p>Preco Total:</p>
-              <p>{totalPrice}</p>
+              <p>{convertedTotal}</p>
             </div>
           </div>
-          <button onClick={handleSubmit}>Submeter Reserva</button>
+          <button form="reservation" type="submit">
+            Submeter Reserva
+          </button>
         </div>
       </div>
     </div>

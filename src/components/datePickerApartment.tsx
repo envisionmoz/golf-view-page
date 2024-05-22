@@ -136,7 +136,7 @@ function DatePickerApartment({ parameter }: Props) {
         departure: departureDate.toString().split(" ").slice(1, 4).join(" "),
         apartment: parameter.childId,
         guests: (numberOfAdults + numberOfChildren).toString(),
-        totalPrice: convertedTotal.toString(),
+        totalPrice: totalPrice.toString(),
       }).toString();
       router.push(`/${locale}/checkout?currency=${selectedCurrency}&${queryParams}`);
     }

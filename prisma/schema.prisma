@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-   previewFeatures = ["fullTextSearch"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -10,32 +10,50 @@ datasource db {
 
 model apartment {
   apartment_id Int           @id @default(autoincrement())
-  price        Decimal       @db.Decimal(10, 2)
-  num_bedrooms Int
+  price        Decimal?      @db.Decimal(10, 2)
+  num_bedrooms Int?
   reservation  reservation[]
 }
 
 model guest {
-  guest_id       Int         @id @default(autoincrement())
-  reservation_id Int
-  name           String      @db.VarChar(100)
-  email          String      @db.VarChar(100)
-  phone_number   String      @db.VarChar(20)
-  reservation    reservation @relation(fields: [reservation_id], references: [reservation_id], onUpdate: Restrict, map: "guest_ibfk_1")
-
-  @@index([reservation_id], map: "reservation_id")
+  guest_id         Int           @id @default(autoincrement())
+  name             String?       @db.VarChar(100)
+  email            String?       @unique(map: "unique_email") @db.VarChar(100)
+  phone_number     String?       @db.VarChar(20)
+  special_requests String?       @db.Text
+  reservation      reservation[]
 }
 
 model reservation {
-  reservation_id   Int       @id @default(autoincrement())
-  apartment_id     Int
-  arrival_date     DateTime  @db.Date
-  departure_date   DateTime  @db.Date
-  total_price      Decimal   @db.Decimal(10, 2)
-  num_guests       Int
-  special_requests String?   @db.Text
-  guest            guest[]
-  apartment        apartment @relation(fields: [apartment_id], references: [apartment_id], onUpdate: Restrict, map: "reservation_ibfk_1")
+  reservation_id Int                 @id @default(autoincrement())
+  apartment_id   Int?
+  arrival_date   DateTime?           @db.Date
+  departure_date DateTime?           @db.Date
+  total_price    Decimal?            @db.Decimal(10, 2)
+  num_guests     Int?
+  status         reservation_status? @default(pending)
+  guest_id       Int?
+  apartment      apartment?          @relation(fields: [apartment_id], references: [apartment_id], onDelete: Restrict, onUpdate: Restrict, map: "reservation_ibfk_1")
+  guest          guest?              @relation(fields: [guest_id], references: [guest_id], onUpdate: Restrict, map: "fk_guest_id")
 
   @@index([apartment_id], map: "apartment_id")
+  @@index([guest_id], map: "fk_guest_id")
+}
+
+model user {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique(map: "email") @db.VarChar(255)
+  username  String    @unique(map: "username") @db.VarChar(255)
+  password  String    @db.VarChar(255)
+  createdAt DateTime? @default(now()) @db.DateTime(0)
+  updateUt  DateTime  @default(now()) @db.DateTime(0)
+}
+
+enum reservation_status {
+  pending
+  accepted
+  denied
+  cancelled
+  checked_in  @map("checked in")
+  checked_out @map("checked out")
 }

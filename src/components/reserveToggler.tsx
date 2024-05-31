@@ -5,7 +5,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../css/popup.css";
 import { FaCalendarAlt } from "react-icons/fa";
-
+import { DatePickerWithRange } from "./Datepicker";
+import "../css/global.css"
 interface LanguageTogglerProps {
   isOverlayVisible: boolean;
 }
@@ -43,45 +44,46 @@ const ReserveToggler: React.FC<LanguageTogglerProps> = ({
   return (
     <>
       {isOverlayVisible && (
-        <div className="reserve-container">
-          <form>
-            <DatePicker
-              className="date-picker-container"
-              showIcon
-              selected={arrivalDate}
-              closeOnScroll={(e) => e.target === document}
-              onChange={handleArrivalDateChange}
-              minDate={minArrivalDate}
-              maxDate={maxDepartureDate}
-              selectsStart
-              startDate={arrivalDate}
-              endDate={departureDate}
-              dateFormat="MMM d, yy"
-              placeholderText={new Date().toLocaleDateString()}
-              icon={<FaCalendarAlt  />}
-            />
+        // <div className="reserve-container">
+        //   <form>
+        //     <DatePicker
+        //       className="date-picker-container"
+        //       showIcon
+        //       selected={arrivalDate}
+        //       closeOnScroll={(e) => e.target === document}
+        //       onChange={handleArrivalDateChange}
+        //       minDate={minArrivalDate}
+        //       maxDate={maxDepartureDate}
+        //       selectsStart
+        //       startDate={arrivalDate}
+        //       endDate={departureDate}
+        //       dateFormat="MMM d, yy"
+        //       placeholderText={new Date().toLocaleDateString()}
+        //       icon={<FaCalendarAlt  />}
+        //     />
 
-            <DatePicker
-              className="date-picker-container"
-              showIcon
-              selected={departureDate}
-              closeOnScroll={(e) => e.target === document}
-              onChange={handleDepartureDateChange}
-              minDate={arrivalDate || tomorrow}
-              maxDate={maxDepartureDate}
-              selectsEnd
-              startDate={arrivalDate}
-              endDate={departureDate}
-              dateFormat="MMM d, yy"
-              placeholderText={tomorrow.toLocaleDateString()}
-              icon={<FaCalendarAlt />}
-            />
+        //     <DatePicker
+        //       className="date-picker-container"
+        //       showIcon
+        //       selected={departureDate}
+        //       closeOnScroll={(e) => e.target === document}
+        //       onChange={handleDepartureDateChange}
+        //       minDate={arrivalDate || tomorrow}
+        //       maxDate={maxDepartureDate}
+        //       selectsEnd
+        //       startDate={arrivalDate}
+        //       endDate={departureDate}
+        //       dateFormat="MMM d, yy"
+        //       placeholderText={tomorrow.toLocaleDateString()}
+        //       icon={<FaCalendarAlt />}
+        //     />
 
-            <button type="button" onClick={searchAvailableApartments}>
-              Pesquisar
-            </button>
-          </form>
-        </div>
+        //     <button type="button" onClick={searchAvailableApartments}>
+        //       Pesquisar
+        //     </button>
+        //   </form>
+        // </div>
+        <DatePickerWithRange/>
       )}
     </>
   );
